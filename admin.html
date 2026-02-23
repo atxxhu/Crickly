@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crickly – Admin Panel</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- GLOBAL CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ================= PAGE LOADER ================= -->
+  <div id="pageLoader" class="page-loader">
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">CRICKLY</div>
+    </div>
+  </div>
+
+  <!-- ================= ADMIN HEADER ================= -->
+  <div class="admin-header">
+    <h1>ADMIN PANEL</h1>
+    <p>Manage Live Matches</p>
+    <button class="btn logout-btn" id="logoutBtn">Logout</button>
+  </div>
+
+  <!-- ================= ADMIN CONTENT ================= -->
+  <div class="admin-container">
+
+    <!-- ===== ADD M3U8 MATCH ===== -->
+    <div class="admin-card">
+      <h2>Add M3U8 Match (Player 1)</h2>
+
+      <div class="form-group">
+        <input type="text" id="m3u8Title" placeholder="Match title">
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="m3u8Poster" placeholder="Poster image URL">
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="m3u8Url" placeholder="M3U8 URL (.m3u8)">
+      </div>
+
+      <div class="form-group">
+        <select id="m3u8Status">
+          <option value="live">LIVE</option>
+          <option value="upcoming">UPCOMING</option>
+        </select>
+      </div>
+
+      <button class="btn primary-btn" id="addM3u8Btn">
+        Add M3U8 Match
+      </button>
+    </div>
+
+    <!-- ===== ADD MPD MATCH ===== -->
+    <div class="admin-card">
+      <h2>Add MPD Match (Player 2)</h2>
+
+      <div class="form-group">
+        <input type="text" id="mpdTitle" placeholder="Match title">
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="mpdPoster" placeholder="Poster image URL">
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="mpdUrl" placeholder="MPD URL (.mpd)">
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="mpdCookie" placeholder="__hdnea__ cookie">
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="mpdKid" placeholder="KID (hex)">
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="mpdKey" placeholder="KEY (hex)">
+      </div>
+
+      <div class="form-group">
+        <select id="mpdStatus">
+          <option value="live">LIVE</option>
+          <option value="upcoming">UPCOMING</option>
+        </select>
+      </div>
+
+      <button class="btn primary-btn" id="addMpdBtn">
+        Add MPD Match
+      </button>
+    </div>
+
+    <!-- ===== MANAGE MATCHES (NEW) ===== -->
+    <div class="admin-card">
+      <h2>Manage Matches</h2>
+
+      <!-- Matches will be injected here by admin.js -->
+      <div id="adminMatchList"></div>
+    </div>
+
+  </div>
+
+  <!-- ================= ADMIN SCRIPT ================= -->
+  <script type="module" src="admin.js"></script>
+
+  <!-- ================= LOADER FALLBACK ================= -->
+  <script>
+    window.addEventListener("load", () => {
+      document.getElementById("pageLoader")?.classList.add("hide");
+    });
+  </script>
+
+</body>
+</html>
