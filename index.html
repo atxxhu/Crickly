@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(s){s.dataset.zone='10653603',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<script src="https://rightyrely.com/41/da/36/41da3661a9d6b5a24b7dca70792890d1.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crickly – Cricket Live Streaming</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- GLOBAL CSS -->
+  <link rel="stylesheet" href="style.css">
+<script>
+(function () {
+  const ua = navigator.userAgent.toLowerCase();
+
+  const isChrome =
+    ua.includes("chrome") &&
+    !ua.includes("edg") &&
+    !ua.includes("opr") &&
+    !ua.includes("brave") &&
+    !ua.includes("samsungbrowser");
+
+  if (!isChrome) {
+    document.documentElement.innerHTML = `
+      <style>
+        body {
+          margin:0;
+          height:100vh;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          background:#050512;
+          color:#cfe0ff;
+          font-family:Poppins,sans-serif;
+          text-align:center;
+        }
+        .box {
+          max-width:420px;
+          padding:24px;
+          background:linear-gradient(180deg,#14163f,#0a0c26);
+          border-radius:22px;
+          box-shadow:0 20px 50px rgba(0,0,0,.6);
+        }
+        h2 { color:#8bb3ff; margin-bottom:10px; }
+        p { opacity:.8; }
+      </style>
+
+      <div class="box">
+        <h2>Unsupported Browser</h2>
+        <p>This website works only in <b>Google Chrome</b>.</p>
+        <p>Please open this site in Chrome browser.</p>
+      </div>
+    `;
+    throw new Error("Blocked non-Chrome browser");
+  }
+})();
+</script>
+</head>
+<body>
+
+  <!-- ================= PAGE LOADER ================= -->
+  <div id="pageLoader" class="page-loader">
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">CRICKLY</div>
+    </div>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header">
+    <h1 class="site-logo">CRICKLY</h1>
+    <p class="site-tagline">Watch Live Cricket Anytime</p>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="home-container">
+    <div class="match-list" id="matchList">
+      <!-- Cards injected by main.js -->
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <nav class="footer-links">
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="disclaimer.html">Disclaimer</a>
+      <a href="dmca.html">DMCA</a>
+    </nav>
+
+    <div class="footer-copy">
+      © 2026 Crickly | Made With Love
+    </div>
+  </footer>
+
+  <!-- ======================================================
+       🔔 TELEGRAM JOIN POPUP (SESSION BASED)
+  ======================================================= -->
+  <div class="tg-overlay" id="tgOverlay">
+    <div class="tg-popup">
+      <h3>JOIN CRICKLY</h3>
+      <p>Join our Telegram channel for live match updates.</p>
+
+      <div class="tg-actions">
+        <a
+          href="https://telegram.me/+NSqV0ZHy3flhZmQ1"
+          target="_blank"
+          class="tg-join"
+          onclick="closeTelegramPopup()"
+        >
+          Join Telegram
+        </a>
+
+        <button
+          class="tg-already"
+          onclick="closeTelegramPopup()"
+        >
+          Already Joined
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN SCRIPT ================= -->
+  <script type="module" src="main.js"></script>
+
+  <!-- ================= LOADER HIDE ================= -->
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("pageLoader");
+      if (loader) loader.classList.add("hide");
+    });
+  </script>
+
+  <!-- ================= TELEGRAM POPUP LOGIC ================= -->
+  <script>
+    const tgOverlay = document.getElementById("tgOverlay");
+
+    if (!sessionStorage.getItem("tgPopupSeen")) {
+      tgOverlay.style.display = "flex";
+    }
+
+    function closeTelegramPopup() {
+      sessionStorage.setItem("tgPopupSeen", "yes");
+      tgOverlay.style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
