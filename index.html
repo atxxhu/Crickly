@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- =========================================
+       CHROME ONLY CHECK
+  ========================================== -->
+  <script>
+  (function () {
+    const ua = navigator.userAgent;
+    const isChromium = /Chrome\/\d+/.test(ua);
+    const isEdge = /Edg\//.test(ua);
+    const isOpera = /OPR\//.test(ua);
+    const isSamsung = /SamsungBrowser\//.test(ua);
+    const isFirefox = /Firefox\//.test(ua);
+    const isSafari = /Safari\//.test(ua) && !/Chrome\//.test(ua);
+    const isBrave = navigator.brave !== undefined || ua.includes("Brave");
+
+    const isRealChrome = isChromium && !isEdge && !isOpera && !isSamsung && !isFirefox && !isSafari && !isBrave;
+
+    if (isRealChrome) return;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.style.display = "none";
+      const overlay = document.createElement("div");
+      overlay.style.cssText = `position:fixed;inset:0;background:#0b0b12;color:#fff;display:flex;align-items:center;justify-content:center;z-index:999999;font-family:Poppins,sans-serif;`;
+      overlay.innerHTML = `<div style="text-align:center;max-width:320px;padding:20px"><h2 style="margin-bottom:10px;">Unsupported Browser</h2><p style="opacity:.85">This website works only in <b>Google Chrome</b>.</p></div>`;
+      document.body.after(overlay);
+    });
+    throw new Error("Blocked: Not Chrome");
+  })();
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crickly – Cricket Live Streaming</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* =========================================
+       ADBLOCK OVERLAY (MATCHES TG-POPUP UI)
+    ========================================== */
+    #adblockOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8); /* Match tg-overlay backdrop */
+      backdrop-filter: blur(8px);
+      z-index: 2000000;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Reuse styles from .tg-popup */
+    .ab-popup {
+      background: #161625;
+      width: 90%;
+      max-width: 400px;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .ab-popup h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .ab-popup p {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .ab-refresh {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .ab-refresh:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 75, 43, 0.3);
+    }
+  </style>
+
+  <!-- ADS SCRIPT -->
+  <script>
+    (function (s) {
+      s.dataset.zone = '10653603';
+      s.src = 'https://al5sm.com/tag.min.js';
+    })(
+      [document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script'))
+    );
+  </script>
+
+</head>
+
+<body>
+
+  <!-- =========================================
+       ADBLOCK POPUP (Native UI)
+  ========================================== -->
+  <div id="adblockOverlay">
+    <div class="ab-popup">
+      <h3>Adblock Detected</h3>
+      <p>We've detected an adblocker or a DNS filter. To watch live cricket, please disable it and refresh the page.</p>
+      <button class="ab-refresh" onclick="location.reload()">Refresh Page</button>
+    </div>
+  </div>
+
+  <div id="pageLoader" class="page-loader">
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">CRICKLY</div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <h1 class="site-logo">CRICKLY</h1>
+    <p class="site-tagline">Watch Live Cricket Anytime</p>
+  </header>
+
+  <main class="home-container">
+    <div class="match-list" id="matchList"></div>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="footer-links">
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="disclaimer.html">Disclaimer</a>
+      <a href="dmca.html">DMCA</a>
+    </nav>
+    <div class="footer-copy">© 2026 Crickly | Made With Love</div>
+  </footer>
+
+  <div class="tg-overlay" id="tgOverlay">
+    <div class="tg-popup">
+      <h3>JOIN CRICKLY</h3>
+      <p>Join our Telegram channel for live match updates.</p>
+      <div class="tg-actions">
+        <a href="https://telegram.me/+NSqV0ZHy3flhZmQ1" target="_blank" class="tg-join" onclick="closeTelegramPopup()">Join Telegram</a>
+        <button class="tg-already" onclick="closeTelegramPopup()">Already Joined</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+
+  <!-- =========================================
+       ADBLOCK DETECTION LOGIC
+  ========================================== -->
+  <script>
+    async function detectAdBlock() {
+      const overlay = document.getElementById('adblockOverlay');
+      let isBlocked = false;
+
+      // 1. EXTENSION TEST (Bait Element)
+      const bait = document.createElement('div');
+      bait.className = 'ad-banner adsbox doubleclick ad-placement banner-ads pub_300x250';
+      bait.style.cssText = 'position:absolute; top:-999px; left:-999px; width:1px; height:1px;';
+      document.body.appendChild(bait);
+
+      await new Promise(r => setTimeout(r, 150));
+
+      if (window.getComputedStyle(bait).display === 'none' || bait.offsetHeight === 0) {
+        isBlocked = true;
+      }
+      document.body.removeChild(bait);
+
+      // 2. DNS TEST (Network Fetch)
+      if (!isBlocked) {
+        try {
+          await fetch(new Request('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', {
+            method: 'HEAD',
+            mode: 'no-cors'
+          }));
+        } catch (e) {
+          isBlocked = true; // DNS Blocker intercepted the request
+        }
+      }
+
+      if (isBlocked) {
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    window.addEventListener('load', detectAdBlock);
+  </script>
+
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("pageLoader");
+      if (loader) loader.classList.add("hide");
+    });
+
+    const tgOverlay = document.getElementById("tgOverlay");
+    if (!sessionStorage.getItem("tgPopupSeen")) {
+      tgOverlay.style.display = "flex";
+    }
+    function closeTelegramPopup() {
+      sessionStorage.setItem("tgPopupSeen", "yes");
+      tgOverlay.style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
