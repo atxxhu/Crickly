@@ -1,0 +1,136 @@
+<div id="pageLoader" class="page-loader">
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">CRICKLY</div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <h1 class="site-logo">CRICKLY</h1>
+    <p class="site-tagline">Watch Live Cricket Anytime</p>
+  </header>
+
+  <main class="home-container">
+    <div class="match-list" id="matchList"></div>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="footer-links">
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="disclaimer.html">Disclaimer</a>
+      <a href="dmca.html">DMCA</a>
+    </nav>
+    <div class="footer-copy">© 2026 Crickly | Made With Love</div>
+  </footer>
+
+  <div class="tg-overlay" id="tgOverlay">
+    <div class="tg-popup">
+      <h3>JOIN CRICKLY</h3>
+      <p>Join our Telegram channel for live match updates.</p>
+      <div class="tg-actions">
+        <a href="https://telegram.me/+NSqV0ZHy3flhZmQ1" target="_blank" class="tg-join" onclick="closeTelegramPopup()">Join Telegram</a>
+        <button class="tg-already" onclick="closeTelegramPopup()">Already Joined</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+<!-- =========================================
+     ADBLOCK OVERLAY (CHROME POPUP STYLE)
+========================================== -->
+<div id="adblockOverlay" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0b0b12;
+  color:#fff;
+  align-items:center;
+  justify-content:center;
+  z-index:999999;
+  font-family:Poppins,sans-serif;
+">
+  <div style="text-align:center;max-width:320px;padding:20px">
+    <h2 style="margin-bottom:10px;">Network Protection Detected</h2>
+
+    <p style="opacity:.85">
+      This website is supported by ads.
+    </p>
+
+    <p style="opacity:.6;margin-top:6px">
+      Please disable:
+      <br>• Private DNS
+      <br>• AdBlock / AdGuard
+    </p>
+
+    <p style="opacity:.6;margin-top:10px">
+      Then refresh the page.
+    </p>
+  </div>
+</div>
+  <!-- =========================================
+       ADBLOCK DETECTION SCRIPT
+  ========================================== -->
+  <script>
+    async function checkAdBlock() {
+      const overlay = document.getElementById('adblockOverlay');
+      let isBlocked = false;
+
+      // 1. EXTENSION CHECK (Bait Element)
+      const bait = document.createElement('div');
+      bait.className = 'pub_300x250 pub_300x250m pub_728x90 text-ad text_ad ad-window ad-layer';
+      bait.style.cssText = 'position:absolute; top:-999px; left:-999px; width:1px; height:1px;';
+      document.body.appendChild(bait);
+
+      // Brief delay for extension processing
+      await new Promise(r => setTimeout(r, 100));
+
+      if (window.getComputedStyle(bait).getPropertyValue('display') === 'none' || bait.offsetHeight === 0) {
+        isBlocked = true;
+      }
+      document.body.removeChild(bait);
+
+      // 2. DNS CHECK (Network Fetch)
+      if (!isBlocked) {
+        try {
+          // Attempt to fetch a script from a common ad domain
+          await fetch(new Request('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', {
+            method: 'HEAD',
+            mode: 'no-cors',
+            cache: 'no-store'
+          }));
+        } catch (e) {
+          // If the fetch fails entirely, it's likely a DNS/Network block
+          isBlocked = true;
+        }
+      }
+
+      // Show overlay if detected
+      if (isBlocked) {
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    // Run check after initial load
+    window.addEventListener('load', checkAdBlock);
+  </script>
+
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("pageLoader");
+      if (loader) loader.classList.add("hide");
+    });
+
+    const tgOverlay = document.getElementById("tgOverlay");
+    if (!sessionStorage.getItem("tgPopupSeen")) {
+      tgOverlay.style.display = "flex";
+    }
+    function closeTelegramPopup() {
+      sessionStorage.setItem("tgPopupSeen", "yes");
+      tgOverlay.style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
