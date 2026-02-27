@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- =========================================
+       CHROME ONLY CHECK (POPUP ONLY, NO REDIRECT)
+  ========================================== -->
+  <script>
+  (function () {
+    const ua = navigator.userAgent;
+
+    const isChromium = /Chrome\/\d+/.test(ua);
+    const isEdge = /Edg\//.test(ua);
+    const isOpera = /OPR\//.test(ua);
+    const isSamsung = /SamsungBrowser\//.test(ua);
+    const isFirefox = /Firefox\//.test(ua);
+    const isSafari = /Safari\//.test(ua) && !/Chrome\//.test(ua);
+    const isBrave =
+      navigator.brave !== undefined ||
+      ua.includes("Brave");
+
+    const isRealChrome =
+      isChromium &&
+      !isEdge &&
+      !isOpera &&
+      !isSamsung &&
+      !isFirefox &&
+      !isSafari &&
+      !isBrave;
+
+    if (isRealChrome) return;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.style.display = "none";
+
+      const overlay = document.createElement("div");
+      overlay.style.cssText = `
+        position:fixed;
+        inset:0;
+        background:#0b0b12;
+        color:#fff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        z-index:999999;
+        font-family:Poppins,sans-serif;
+      `;
+
+      overlay.innerHTML = `
+        <div style="text-align:center;max-width:320px;padding:20px">
+          <h2 style="margin-bottom:10px;">Unsupported Browser</h2>
+          <p style="opacity:.85">
+            This player works only in <b>Google Chrome</b>.
+          </p>
+          <p style="opacity:.6;margin-top:6px">
+            Please open this page in Chrome browser.
+          </p>
+        </div>
+      `;
+
+      document.body.after(overlay);
+    });
+
+    throw new Error("Blocked: Not Chrome");
+  })();
+  </script>
+
+  <!-- =========================================
+       META
+  ========================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crickly – Live Player</title>
+
+  <!-- =========================================
+       ADS
+  ========================================== -->
+  <script>
+    (function (s) {
+      s.dataset.zone = '10653603';
+      s.src = 'https://al5sm.com/tag.min.js';
+    })(
+      [document.documentElement, document.body]
+        .filter(Boolean)
+        .pop()
+        .appendChild(document.createElement('script'))
+    );
+  </script>
+
+  <!-- =========================================
+       GOOGLE FONT
+  ========================================== -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- =========================================
+       GLOBAL CSS
+  ========================================== -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- =========================================
+       SHAKA PLAYER
+  ========================================== -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js"
+    crossorigin="anonymous">
+  </script>
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css"
+    crossorigin="anonymous">
+
+</head>
+
+<body class="player-page">
+
+  <!-- =========================================
+       PAGE LOADER
+  ========================================== -->
+  <div id="pageLoader" class="page-loader">
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">CRICKLY</div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       CONTENT
+  ========================================== -->
+  <div class="home-container">
+
+    <!-- MATCH TITLE -->
+    <div class="player-title-card">
+      <h2 id="matchTitle" class="player-title-text">Loading…</h2>
+    </div>
+
+    <!-- PLAYER CARD -->
+    <div class="player-card" id="playerCard">
+
+      <!-- 🔴 LIVE USERS -->
+      <div class="live-users-card">
+        <span class="live-dot"></span>
+        <span id="liveUserCount">0</span> Live
+      </div>
+
+      <!-- VIDEO PLAYER -->
+      <div class="player-inner shaka-video-container" data-shaka-player>
+        <video id="video" playsinline muted></video>
+      </div>
+
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-card">
+      <button id="shareLinkBtn" class="action-btn">🔗 Share</button>
+      <a href="index.html" class="action-btn back-btn">⬅ Home</a>
+    </div>
+
+  </div>
+
+  <!-- =========================================
+       PLAYER SCRIPT
+  ========================================== -->
+  <script type="module" src="player2.js"></script>
+
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
+  <footer class="site-footer">
+    <div class="footer-copy">
+      © 2026 Crickly | Made With Love
+    </div>
+  </footer>
+
+</body>
+</html>
