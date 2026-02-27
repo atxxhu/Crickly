@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- =========================================
+       CHROME ONLY CHECK (POPUP ONLY, NO REDIRECT)
+  ========================================== -->
+  <script>
+  (function () {
+    const ua = navigator.userAgent;
+
+    const isChromium = /Chrome\/\d+/.test(ua);
+    const isEdge = /Edg\//.test(ua);
+    const isOpera = /OPR\//.test(ua);
+    const isSamsung = /SamsungBrowser\//.test(ua);
+    const isFirefox = /Firefox\//.test(ua);
+    const isSafari = /Safari\//.test(ua) && !/Chrome\//.test(ua);
+    const isBrave =
+      navigator.brave !== undefined ||
+      ua.includes("Brave");
+
+    const isRealChrome =
+      isChromium &&
+      !isEdge &&
+      !isOpera &&
+      !isSamsung &&
+      !isFirefox &&
+      !isSafari &&
+      !isBrave;
+
+    if (isRealChrome) return;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.style.display = "none";
+
+      const overlay = document.createElement("div");
+      overlay.style.cssText = `
+        position:fixed;
+        inset:0;
+        background:#0b0b12;
+        color:#fff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        z-index:999999;
+        font-family:Poppins,sans-serif;
+      `;
+
+      overlay.innerHTML = `
+        <div style="text-align:center;max-width:320px;padding:20px">
+          <h2 style="margin-bottom:10px;">Unsupported Browser</h2>
+          <p style="opacity:.85">
+            This player works only in <b>Google Chrome</b>.
+          </p>
+        </div>
+      `;
+
+      document.body.after(overlay);
+    });
+
+    throw new Error("Blocked: Not Chrome");
+  })();
+  </script>
+
+  <!-- =========================================
+       META
+  ========================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crickly – Live Player</title>
+
+  <!-- =========================================
+       ADS
+  ========================================== -->
+  <script>
+    (function (s) {
+      s.dataset.zone = '10653603';
+      s.src = 'https://al5sm.com/tag.min.js';
+    })(
+      [document.documentElement, document.body]
+        .filter(Boolean)
+        .pop()
+        .appendChild(document.createElement('script'))
+    );
+  </script>
+
+  <!-- =========================================
+       GOOGLE FONT
+  ========================================== -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- =========================================
+       GLOBAL CSS
+  ========================================== -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- =========================================
+       PLYR CSS
+  ========================================== -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+
+  <!-- =========================================
+       HLS SCRIPT
+  ========================================== -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <style>
+    /* =========================================
+       ADBLOCK OVERLAY STYLES
+    ========================================== */
+    #adblockOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 2000000;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .ab-popup {
+      background: #161625;
+      width: 90%;
+      max-width: 380px;
+      padding: 35px 25px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .ab-popup h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .ab-popup p {
+      font-size: 14px;
+      color: #b0b0b0;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .ab-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+
+    .ab-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+    }
+  </style>
+
+</head>
+
+<body class="player-page">
+
+  <!-- =========================================
+       ADBLOCK DETECTOR OVERLAY
+  ========================================== -->
+  <div id="adblockOverlay">
+    <div class="ab-popup">
+      <h3>Adblock Detected</h3>
+      <p>We've detected an Adblocker or DNS filter. To enjoy the live stream, please disable it and refresh the page.</p>
+      <button class="ab-btn" onclick="location.reload()">Refresh Player</button>
+    </div>
+  </div>
+
+  <!-- =========================================
+       PAGE LOADER
+  ========================================== -->
+  <div id="pageLoader" class="page-loader">
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">CRICKLY</div>
+    </div>
+  </div>
+
+  <div class="home-container">
+
+    <!-- =========================================
+         MATCH TITLE
+    ========================================== -->
+    <div class="player-title-card">
+      <h2 id="matchTitle" class="player-title-text">Loading…</h2>
+    </div>
+
+    <!-- =========================================
+         PLAYER CARD
+    ========================================== -->
+    <div class="player-card">
+
+      <!-- 🔴 LIVE USERS -->
+      <div class="live-users-card">
+        <span class="live-dot"></span>
+        <span id="liveUserCount">0</span> Live
+      </div>
+
+      <!-- VIDEO -->
+      <div class="player-inner">
+        <video
+          id="player"
+          muted
+          playsinline
+          crossorigin
+        ></video>
+      </div>
+
+    </div>
+
+    <!-- =========================================
+         ACTION BUTTONS
+    ========================================== -->
+    <div class="action-card">
+      <button id="shareLinkBtn" class="action-btn">🔗 Share</button>
+      <a href="index.html" class="action-btn back-btn">⬅ Home</a>
+    </div>
+
+  </div>
+
+  <!-- =========================================
+       PLAYER SCRIPTS
+  ========================================== -->
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <script type="module" src="player1.js"></script>
+<!-- =========================================
+     TELEGRAM POPUP
+========================================== -->
+<div class="tg-overlay" id="tgOverlay">
+  <div class="tg-popup">
+    <h3>JOIN CRICKLY</h3>
+    <p>Join our Telegram channel for live match updates.</p>
+    <div class="tg-actions">
+      <a href="https://telegram.me/+NSqV0ZHy3flhZmQ1"
+         target="_blank"
+         class="tg-join"
+         onclick="closeTelegramPopup()">
+        Join Telegram
+      </a>
+      <button class="tg-already"
+              onclick="closeTelegramPopup()">
+        Already Joined
+      </button>
+    </div>
+  </div>
+</div>
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
+  <footer class="site-footer">
+    <div class="footer-copy">
+      © 2026 Crickly | Made With Love
+    </div>
+  </footer>
+
+  <!-- =========================================
+       ADBLOCK DETECTION LOGIC
+  ========================================== -->
+  <script>
+    async function performAdBlockCheck() {
+      const overlay = document.getElementById('adblockOverlay');
+      let isBlocked = false;
+
+      // 1. Extension Detection (Bait)
+      const bait = document.createElement('div');
+      bait.className = 'adsbygoogle ad-unit placement-top banner-ads pub_300x250';
+      bait.style.cssText = 'position:absolute; top:-1000px; left:-1000px; width:1px; height:1px;';
+      document.body.appendChild(bait);
+
+      await new Promise(r => setTimeout(r, 150));
+
+      if (window.getComputedStyle(bait).display === 'none' || bait.offsetHeight === 0) {
+        isBlocked = true;
+      }
+      document.body.removeChild(bait);
+
+      // 2. Network Detection (DNS/Firewall)
+      if (!isBlocked) {
+        try {
+          await fetch(new Request('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', {
+            method: 'HEAD',
+            mode: 'no-cors',
+            cache: 'no-store'
+          }));
+        } catch (e) {
+          isBlocked = true;
+        }
+      }
+
+      if (isBlocked) {
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        // Force stop player if possible by removing sources
+        const video = document.getElementById('player');
+        if (video) video.pause();
+      }
+    }
+
+    window.addEventListener('load', performAdBlockCheck);
+    
+    // Page Loader hide logic
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("pageLoader");
+      if (loader) loader.classList.add("hide");
+    });
+  </script>
+<script>
+  const tgOverlay = document.getElementById("tgOverlay");
+
+  if (!sessionStorage.getItem("tgPopupSeen")) {
+    tgOverlay.style.display = "flex";
+  }
+
+  function closeTelegramPopup() {
+    sessionStorage.setItem("tgPopupSeen", "yes");
+    tgOverlay.style.display = "none";
+  }
+</script>
+</body>
+</html>
