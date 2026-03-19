@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- =========================================
+       META
+  ========================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crickly – Live Player</title>
+
+
+  <!-- =========================================
+       ADS SCRIPT
+  ========================================== -->
+  <script>
+    (function (s) {
+      s.dataset.zone = '10653603';
+      s.src = 'https://al5sm.com/tag.min.js';
+    })(
+      [document.documentElement, document.body]
+        .filter(Boolean)
+        .pop()
+        .appendChild(document.createElement('script'))
+    );
+  </script>
+
+
+  <!-- =========================================
+       GOOGLE FONT
+  ========================================== -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- =========================================
+       GLOBAL CSS
+  ========================================== -->
+  <link rel="stylesheet" href="style.css">
+
+
+  <!-- =========================================
+       JWPLAYER LIBRARY
+  ========================================== -->
+  <script src="https://content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+
+
+  <!-- =========================================
+       PLAYER STYLE
+  ========================================== -->
+  <style>
+
+    /* ===== Responsive Player ===== */
+    .player-inner {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    #player {
+      width: 100%;
+      height: 100%;
+    }
+
+  </style>
+
+</head>
+
+
+<body class="player-page">
+
+
+  <!-- =========================================
+       PAGE LOADER
+  ========================================== -->
+  <div id="pageLoader" class="page-loader">
+
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">CRICKLY</div>
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       PLAYER SECTION
+  ========================================== -->
+  <div class="home-container">
+
+    <!-- ===== MATCH TITLE ===== -->
+    <div class="player-title-card">
+      <h2 id="matchTitle" class="player-title-text">Loading…</h2>
+    </div>
+
+
+    <!-- ===== PLAYER CARD ===== -->
+    <div class="player-card">
+
+      <!-- Live Users -->
+      <div class="live-users-card">
+        <span class="live-dot"></span>
+        <span id="liveUserCount">0</span> Live
+      </div>
+
+      <!-- Video Player -->
+      <div class="player-inner">
+        <div id="player"></div>
+      </div>
+
+    </div>
+
+
+    <!-- ===== ACTION BUTTONS ===== -->
+    <div class="action-card">
+
+      <button id="shareLinkBtn" class="action-btn">
+        🔗 Share
+      </button>
+
+      <a href="index.html" class="action-btn back-btn">
+        ⬅ Home
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       TELEGRAM POPUP
+  ========================================== -->
+  <div class="tg-overlay" id="tgOverlay">
+
+    <div class="tg-popup">
+
+      <h3>JOIN CRICKLY</h3>
+
+      <p>
+        Join our Telegram channel for live match updates.
+      </p>
+
+      <div class="tg-actions">
+
+        <a href="https://telegram.me/+NSqV0ZHy3flhZmQ1"
+           target="_blank"
+           class="tg-join"
+           onclick="closeTelegramPopup()">
+          Join Telegram
+        </a>
+
+        <button class="tg-already" onclick="closeTelegramPopup()">
+          Already Joined
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       PLAYER SCRIPT
+  ========================================== -->
+  <script type="module" src="player1.js"></script>
+
+
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
+  <footer class="site-footer">
+    <div class="footer-copy">
+      © 2026 Crickly | Made With Love
+    </div>
+  </footer>
+
+
+  <!-- =========================================
+       LOADER + TELEGRAM LOGIC
+  ========================================== -->
+  <script>
+
+    /* ===== Page Loader ===== */
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("pageLoader");
+      if (loader) loader.classList.add("hide");
+    });
+
+
+    /* ===== Telegram Popup ===== */
+    const tgOverlay = document.getElementById("tgOverlay");
+
+    if (tgOverlay && !sessionStorage.getItem("tgPopupSeen")) {
+      tgOverlay.style.display = "flex";
+    }
+
+    function closeTelegramPopup() {
+      sessionStorage.setItem("tgPopupSeen", "yes");
+
+      if (tgOverlay) {
+        tgOverlay.style.display = "none";
+      }
+    }
+
+  </script>
+
+</body>
+</html>
